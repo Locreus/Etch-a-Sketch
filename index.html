@@ -2,38 +2,71 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>title</title>
+    <title>Etch-a-Sketch</title>
   </head>
   <style>
-	div.squares:hover{
+	#grid{
+	  width: 960px;
+	}
+	#clearBtn{
+	  padding: 10px 15px;
+	  margin-bottom: 15px;
+	  font-size: 25px;
+	  display: inline-block;
+	}
+	.blackbg{
 	  background-color: black;
 	}
 	.squares{
 	  display: inline-block;
-	  width: 50px;
-	  height: 50px;
 	  border: 1px solid black;
 	  box-sizing: border-box;
 	}
   </style>
 
   <body>
-    <div id="main-div"></div>
+	<button id="clearBtn" type="button" onclick="clearAndQuery()">Clear</button>
   </body>
 
   <script>
-	const gridLength = 16;
-	const container = document.querySelector("#main-div");
-	for(var row = 0 ; row < gridLength ; row++){
-	  let rowdiv = document.createElement("div");
-	  container.appendChild(rowdiv);
-	  for(var col = 0 ; col < gridLength ; col++){
-	    let square = document.createElement("div");
-		square.className = "squares";
-		square.dataset.id = `${row}${col}`;
-		rowdiv.appendChild(square);
+	window.addEventListener("load", function(){ initializeGrid(16); });
+	function initializeGrid(numCells){
+	  const gridLength = 960;
+	  var cells = numCells;
+	  var cellSize = Math.floor(gridLength/cells);
+	  const body = document.querySelector("body");
+	  const gridDiv = document.createElement("div");
+	  gridDiv.id="grid";
+	  body.appendChild(gridDiv);
+	  const gridContainer = document.querySelector("#grid");
+	  for(var row = 0 ; row < cells ; row++){
+	    let rowdiv = document.createElement("div");
+	    rowdiv.style.cssText = `height: ${cellSize}px;`;
+	    gridContainer.appendChild(rowdiv);
+	    for(var col = 0 ; col < cells ; col++){
+	      let square = document.createElement("div");
+		  square.className = "squares";
+		  square.dataset.id = `${row}${col}`;
+		  square.style.cssText = `width: ${cellSize}px; height: ${cellSize}px;`;
+		  square.addEventListener("mouseenter", () => square.classList.add("blackbg"));
+		  rowdiv.appendChild(square);
+	    }
 	  }
 	}
+	function clearGrid(){
+	  const body = document.querySelector("body");
+	  const grid = document.querySelector("#grid");
+	  body.removeChild(grid);
+	}
+	function querySize(){
+	  let cells = parseInt(window.prompt("Enter number of squares for grid."));
+	  initializeGrid(cells);
+	}
+	function clearAndQuery(){ 
+	  clearGrid();
+	  querySize();
+	}
+
   </script>
 </html>
 

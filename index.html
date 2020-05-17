@@ -44,7 +44,6 @@
 	    for(var col = 0 ; col < cells ; col++){
 	      let square = document.createElement("div");
 		  square.className = "squares";
-		  square.dataset.id = `${row}${col}`;
 		  square.style.cssText = `width: ${cellSize}px; height: ${cellSize}px;`;
 		  square.addEventListener("mouseenter", function(e){ shadeCell(e); });
 		  rowdiv.appendChild(square);

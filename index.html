@@ -14,13 +14,11 @@
 	  font-size: 25px;
 	  display: inline-block;
 	}
-	.blackbg{
-	  background-color: black;
-	}
 	.squares{
 	  display: inline-block;
 	  border: 1px solid black;
 	  box-sizing: border-box;
+	  background-color: rgba(0,0,0,0);
 	}
   </style>
 
@@ -48,7 +46,7 @@
 		  square.className = "squares";
 		  square.dataset.id = `${row}${col}`;
 		  square.style.cssText = `width: ${cellSize}px; height: ${cellSize}px;`;
-		  square.addEventListener("mouseenter", () => square.classList.add("blackbg"));
+		  square.addEventListener("mouseenter", function(e){ shadeCell(e); });
 		  rowdiv.appendChild(square);
 	    }
 	  }
@@ -66,7 +64,22 @@
 	  clearGrid();
 	  querySize();
 	}
-
+	function shadeCell(event){
+	  var bgColor = window.getComputedStyle(event.currentTarget).getPropertyValue("background-color");
+	  if (!bgColor.includes("rgba")){
+		return;
+	  }
+	  var alpha = parseAlpha(bgColor);
+	  if (alpha <= 0.9){
+		alpha += 0.1;
+		event.currentTarget.style.setProperty("background-color", `rgba(0,0,0,${alpha}`);
+	  }
+	}
+	function parseAlpha(rgba){
+	  var lastSpace = rgba.lastIndexOf(" ");
+	  var alpha = rgba.slice(lastSpace + 1, -1);
+	  return parseFloat(alpha);
+	}
   </script>
 </html>
 
